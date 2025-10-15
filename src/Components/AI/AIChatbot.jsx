@@ -1,4 +1,4 @@
-"import React from 'react'; export default () => <div>AI Chatbot</div>;" 
+// "import React from 'react'; export default () => <div>AI Chatbot</div>;" 
 import React, { useState, useRef, useEffect } from 'react';
 
 const AIChatbot = () => {
