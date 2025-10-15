@@ -27,8 +27,8 @@ const Navbar = () => {
             <span className="text-xl font-bold text-teal-600">HealthCare+</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          {/* Desktop Navigation - CUSTOM CLASSES */}
+          <div className="md-flex hidden-mobile items-center space-x-6">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -44,8 +44,8 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop Auth Buttons - CUSTOM CLASSES */}
+          <div className="md-flex hidden-mobile items-center space-x-4">
             {user ? (
               <>
                 <Link
@@ -79,8 +79,8 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          {/* Mobile Menu Button - CUSTOM CLASSES */}
+          <div className="mobile-only flex items-center">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
@@ -90,9 +90,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - CUSTOM CLASSES */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg">
+        <div className="mobile-only bg-white shadow-lg">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item) => (
               <Link
