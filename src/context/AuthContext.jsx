@@ -1,4 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { createUser, getUser, updateUser } from '../services/api';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from '../firebase';
 
 const AuthContext = createContext();
 
@@ -15,96 +18,57 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user data exists in localStorage
-    const savedUser = localStorage.getItem('healthcare_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-        localStorage.removeItem('healthcare_user');
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userData = await getUser(user.uid);
+        setUser({ ...user, ...userData });
+      } else {
+        setUser(null);
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const signup = async (email, password, userData) => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const newUser = {
-      id: Date.now(),
-      email,
-      ...userData,
-      appointments: [],
-      donations: [],
-      createdAt: new Date().toISOString()
-    };
-    
-    setUser(newUser);
-    localStorage.setItem('healthcare_user', JSON.stringify(newUser));
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const { user } = userCredential;
+    await createUser(user.uid, { email, ...userData });
+    const newUser = await getUser(user.uid);
+    setUser(newUser)
     return newUser;
   };
 
   const login = async (email, password) => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Demo login - in real app, verify credentials with backend
-    const mockUser = {
-      id: 1,
-      email,
-      name: email === 'demo@healthcare.com' ? 'Demo User' : 'John Doe',
-      phone: '+1 (555) 123-4567',
-      bloodGroup: 'A+',
-      appointments: [
-        {
-          id: 1,
-          doctorName: "Dr. Sarah Johnson",
-          specialization: "Cardiologist",
-          date: "2024-01-15",
-          time: "10:00 AM",
-          status: "confirmed"
-        }
-      ],
-      donations: [
-        {
-          id: 1,
-          type: "blood",
-          date: "2024-01-10",
-          location: "City Blood Bank"
-        }
-      ],
-      lastLogin: new Date().toISOString()
-    };
-    
-    setUser(mockUser);
-    localStorage.setItem('healthcare_user', JSON.stringify(mockUser));
-    return mockUser;
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const { user } = userCredential;
+    const userData = await getUser(user.uid);
+    setUser({ ...user, ...userData });
+    return { ...user, ...userData };
   };
 
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem('healthcare_user');
+    return signOut(auth);
   };
 
   const updateProfile = async (userData) => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const updatedUser = { ...user, ...userData, updatedAt: new Date().toISOString() };
-    setUser(updatedUser);
-    localStorage.setItem('healthcare_user', JSON.stringify(updatedUser));
-    return updatedUser;
+    if (user) {
+      await updateUser(user.uid, userData);
+      const updatedUser = await getUser(user.uid);
+      setUser(updatedUser);
+      return updatedUser;
+    }
   };
 
   const value = {
     user,
+    loading,
     signup,
     login,
     logout,
     updateProfile,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
   };
 
   return (
