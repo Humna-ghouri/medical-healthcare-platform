@@ -2,23 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom responsive classes for navbar */
-@media (max-width: 767px) {
-  .hidden-mobile {
-    display: none !important;
-  }
-  
-  .mobile-only {
-    display: block !important;
-  }
-}
-
+/* Force Tailwind responsive classes in production */
 @media (min-width: 768px) {
-  .md-flex {
+  .md\:flex {
     display: flex !important;
   }
   
-  .mobile-only {
+  .md\:hidden {
     display: none !important;
   }
 }
