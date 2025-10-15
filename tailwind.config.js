@@ -4,9 +4,12 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  important: true, 
+  important: true,
   theme: {
     extend: {
+      screens: {
+        'nav': '760px', // Custom breakpoint add karein
+      },
       colors: {
         teal: {
           50: '#f0fdfa',

@@ -27,8 +27,8 @@ const Navbar = () => {
             <span className="text-xl font-bold text-teal-600">HealthCare+</span>
           </Link>
 
-          {/* Desktop Navigation - PROPER RESPONSIVE */}
-          <div className="hidden md:flex items-center space-x-6">
+          {/* Desktop Navigation - CUSTOM BREAKPOINT */}
+          <div className="hidden min-[760px]:flex items-center space-x-6">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -44,8 +44,8 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop Auth Buttons - PROPER RESPONSIVE */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop Auth Buttons - CUSTOM BREAKPOINT */}
+          <div className="hidden min-[760px]:flex items-center space-x-4">
             {user ? (
               <>
                 <Link
@@ -79,8 +79,8 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          {/* Mobile Menu Button - CUSTOM BREAKPOINT */}
+          <div className="flex min-[760px]:hidden items-center">
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md text-gray-600 hover:text-teal-500 hover:bg-gray-100"
@@ -93,9 +93,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - CUSTOM BREAKPOINT */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg absolute top-16 left-0 right-0">
+        <div className="min-[760px]:hidden bg-white shadow-lg absolute top-16 left-0 right-0">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item) => (
               <Link
