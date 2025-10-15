@@ -20,20 +20,20 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg z-50 h-16">
       <div className="max-w-7xl mx-auto px-4 h-full">
         <div className="flex justify-between items-center h-full">
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
             <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-sm">H</span>
             </div>
             <span className="text-xl font-bold text-teal-600">HealthCare+</span>
           </Link>
 
-          {/* Desktop Navigation - CUSTOM BREAKPOINT */}
-          <div className="hidden min-[760px]:flex items-center space-x-6">
+          {/* Desktop Navigation - BETTER RESPONSIVE */}
+          <div className="hidden lg:flex items-center space-x-4 flex-1 justify-center">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive(item.path)
                     ? 'text-teal-600 bg-teal-50 border-b-2 border-teal-500'
                     : 'text-gray-600 hover:text-teal-500 hover:bg-gray-100'
@@ -44,19 +44,19 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop Auth Buttons - CUSTOM BREAKPOINT */}
-          <div className="hidden min-[760px]:flex items-center space-x-4">
+          {/* Desktop Auth Buttons - BETTER RESPONSIVE */}
+          <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
             {user ? (
               <>
                 <Link
                   to="/profile"
-                  className="px-3 py-2 text-gray-600 hover:text-teal-500 transition-colors"
+                  className="px-3 py-2 text-gray-600 hover:text-teal-500 transition-colors whitespace-nowrap"
                 >
                   Profile
                 </Link>
                 <button
                   onClick={logout}
-                  className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
+                  className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors whitespace-nowrap"
                 >
                   Sign Out
                 </button>
@@ -65,13 +65,13 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="px-3 py-2 text-gray-600 hover:text-teal-500 transition-colors"
+                  className="px-3 py-2 text-gray-600 hover:text-teal-500 transition-colors whitespace-nowrap"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
+                  className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors whitespace-nowrap"
                 >
                   Sign Up
                 </Link>
@@ -79,8 +79,44 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button - CUSTOM BREAKPOINT */}
-          <div className="flex min-[760px]:hidden items-center">
+          {/* Medium Screen Navigation (760px - 1023px) */}
+          <div className="hidden md:flex lg:hidden items-center space-x-2 flex-1 justify-center">
+            {navItems.slice(0, 3).map((item) => ( // Only show first 3 items
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`px-2 py-2 rounded-md text-xs font-medium transition-colors whitespace-nowrap ${
+                  isActive(item.path)
+                    ? 'text-teal-600 bg-teal-50 border-b-2 border-teal-500'
+                    : 'text-gray-600 hover:text-teal-500 hover:bg-gray-100'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Medium Screen Auth Buttons (760px - 1023px) */}
+          <div className="hidden md:flex lg:hidden items-center space-x-2 flex-shrink-0">
+            {user ? (
+              <button
+                onClick={logout}
+                className="bg-teal-500 text-white px-3 py-2 rounded-lg hover:bg-teal-600 transition-colors text-xs"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="bg-teal-500 text-white px-3 py-2 rounded-lg hover:bg-teal-600 transition-colors text-xs"
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
+
+          {/* Mobile Menu Button - Show on smaller screens */}
+          <div className="flex md:hidden items-center">
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md text-gray-600 hover:text-teal-500 hover:bg-gray-100"
@@ -93,9 +129,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - CUSTOM BREAKPOINT */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="min-[760px]:hidden bg-white shadow-lg absolute top-16 left-0 right-0">
+        <div className="md:hidden bg-white shadow-lg absolute top-16 left-0 right-0">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item) => (
               <Link
